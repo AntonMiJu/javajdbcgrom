@@ -1,6 +1,5 @@
 package hibernate.lesson2.homework.hql;
 
-import hibernate.lesson2.homework.Product;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

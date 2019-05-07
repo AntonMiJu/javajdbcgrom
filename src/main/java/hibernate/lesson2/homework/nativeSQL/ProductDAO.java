@@ -1,6 +1,5 @@
 package hibernate.lesson2.homework.nativeSQL;
 
-import hibernate.lesson2.homework.Product;
 import org.hibernate.*;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.NativeQuery;
