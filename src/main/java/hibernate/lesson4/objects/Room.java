@@ -48,7 +48,7 @@ public class Room {
     }
 
     @JoinColumn(name = "HOTEL_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToMany(targetEntity = Room.class, cascade = CascadeType.ALL, mappedBy = "rooms")
     public Hotel getHotel() {
         return hotel;
     }

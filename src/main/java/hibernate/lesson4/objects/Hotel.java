@@ -41,7 +41,7 @@ public class Hotel {
         return street;
     }
 
-    @OneToMany(targetEntity = Room.class, cascade = CascadeType.ALL, mappedBy = "hotel")
+    @ManyToOne(fetch = FetchType.LAZY)
     public List<Room> getRooms() {
         return rooms;
     }
@@ -68,5 +68,17 @@ public class Hotel {
 
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    @Override
+    public String toString() {
+        return "Hotel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", country='" + country + '\'' +
+                ", city='" + city + '\'' +
+                ", street='" + street + '\'' +
+                ", rooms=" + rooms +
+                '}';
     }
 }
