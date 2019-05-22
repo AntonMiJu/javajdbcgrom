@@ -4,6 +4,7 @@ import hibernate.lesson4.objects.User;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.NativeQuery;
 
 import java.util.List;
 
@@ -20,7 +21,10 @@ public class UserDAO extends GeneralDAO<User>{
 
     public User findByName(String name){
         try(Session session = new Configuration().configure().buildSessionFactory().openSession()) {
-            return session.createQuery(findByName,User.class).setParameter(1,name).getSingleResult();
+            NativeQuery nativeQuery = session.createNativeQuery(findByName)
+                    .addEntity(User.class)
+                    .setParameter(1,name);
+            return (User) nativeQuery.getSingleResult();
         } catch (HibernateException e){
             System.err.println("Find by name is failed");
             System.err.println(e.getMessage());

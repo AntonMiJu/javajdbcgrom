@@ -1,10 +1,13 @@
 package hibernate.lesson4.demo;
 
-import hibernate.lesson4.dao.HotelDAO;
+
+import hibernate.lesson4.controller.HotelController;
+import hibernate.lesson4.service.HotelService;
 
 public class HotelDemo {
-    public static void main(String[] args) {
-        HotelDAO hotelDAO = new HotelDAO();
-        System.out.println(hotelDAO.getAll());
+    public static void main(String[] args) throws Exception{
+        HotelController hotelController = new HotelController();
+        HotelService hotelService = new HotelService();
+        System.out.println(hotelService.findByName("Hilton"));
     }
 }

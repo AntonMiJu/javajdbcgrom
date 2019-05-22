@@ -4,6 +4,7 @@ import hibernate.lesson4.objects.Hotel;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.query.NativeQuery;
 
 import java.util.List;
 
@@ -22,7 +23,10 @@ public class HotelDAO extends GeneralDAO<Hotel>{
 
     public Hotel findByName(String name){
         try(Session session = new Configuration().configure().buildSessionFactory().openSession()) {
-            return session.createQuery(findByName,Hotel.class).setParameter(1,name).getSingleResult();
+            NativeQuery nativeQuery = session.createNativeQuery(findByName)
+                    .addEntity(Hotel.class)
+                    .setParameter(1,name);
+            return (Hotel) nativeQuery.getSingleResult();
         } catch (HibernateException e){
             System.err.println("Find by name is failed");
             System.err.println(e.getMessage());
@@ -32,7 +36,10 @@ public class HotelDAO extends GeneralDAO<Hotel>{
 
     public Hotel findByCity(String city){
         try(Session session = new Configuration().configure().buildSessionFactory().openSession()) {
-            return session.createQuery(findByCity,Hotel.class).setParameter(1,city).getSingleResult();
+            NativeQuery nativeQuery = session.createNativeQuery(findByCity)
+                .addEntity(Hotel.class)
+                .setParameter(1,city);
+            return (Hotel) nativeQuery.getSingleResult();
         } catch (HibernateException e){
             System.err.println("Find by name is failed");
             System.err.println(e.getMessage());

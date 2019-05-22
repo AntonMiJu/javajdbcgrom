@@ -2,7 +2,6 @@ package hibernate.lesson4.dao;
 
 import hibernate.lesson4.objects.Order;
 
-import javax.imageio.plugins.tiff.GeoTIFFTagSet;
 import java.util.List;
 
 public class OrderDAO extends GeneralDAO<Order>{

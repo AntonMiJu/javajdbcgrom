@@ -48,7 +48,7 @@ public class Room {
     }
 
     @JoinColumn(name = "HOTEL_ID")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     public Hotel getHotel() {
         return hotel;
     }
