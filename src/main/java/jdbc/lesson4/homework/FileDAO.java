@@ -10,9 +10,11 @@ public class FileDAO {
     private static final String PASS = System.getenv("PASS");
 
     private StorageDAO storageDAO = new StorageDAO();
+    private Connection connection = null;
 
-    public File save(File file) {
+    public File save(File file)  throws SQLException {
         try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
             PreparedStatement prepareStatement = connection.prepareStatement("INSERT INTO FILES VALUES (?,?,?,?,?)");
 
             prepareStatement.setLong(1, file.getId());
@@ -27,15 +29,17 @@ public class FileDAO {
             int response = prepareStatement.executeUpdate();
 
             System.out.println("Save was finished with result " + response);
+            connection.commit();
         } catch (SQLException e) {
-            System.err.println("Something went wrong");
-            e.printStackTrace();
+            connection.rollback();
+            throw e;
         }
         return file;
     }
 
-    public File update(File file) {
+    public File update(File file) throws SQLException{
         try (Connection connection = getConnection()) {
+            connection.setAutoCommit(false);
             PreparedStatement prepareStatement = connection.prepareStatement("UPDATE FILES SET NAME_F = ?, FORMAT_F = ?, SIZE_F = ?, STORAGE_ID = ? WHERE ID = ?");
 
             prepareStatement.setString(1, file.getName());
@@ -50,15 +54,17 @@ public class FileDAO {
             int response = prepareStatement.executeUpdate();
 
             System.out.println("Update was finished with result " + response);
+            connection.commit();
         } catch (SQLException e) {
-            System.err.println("Something went wrong");
-            e.printStackTrace();
+            connection.rollback();
+            throw e;
         }
         return file;
     }
 
-    public void delete(long id) {
+    public void delete(long id) throws SQLException{
         try (Connection connection = getConnection(); Statement statement = connection.createStatement()) {
+            connection.setAutoCommit(false);
             ResultSet resultSet = statement.executeQuery("SELECT ID FROM FILES");
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM FILES WHERE ID = ?");
 
@@ -71,9 +77,10 @@ public class FileDAO {
                 }
             }
             System.out.println("Delete was finished with result " + response);
+            connection.commit();
         } catch (SQLException e) {
-            System.err.println("Something went wrong");
-            e.printStackTrace();
+            connection.rollback();
+            throw e;
         }
     }
 
@@ -112,6 +119,8 @@ public class FileDAO {
     }
 
     private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL, USER, PASS);
+        if (connection == null)
+            connection = DriverManager.getConnection(DB_URL, USER, PASS);
+        return connection;
     }
 }
